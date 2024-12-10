@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İmtahan nəticəsinin yoxlanılması</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --error-color: #e74c3c;
+            --background-color: #f5f7fa;
+            --text-color: #333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        p {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        .icon {
+            position: absolute;
+            right: 10px;
+            top: 38px;
+            color: #888;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #3a7bc8;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>İmtahan nəticəsinin yoxlanılması</h1>
+        <p>Zəhmət olmasa, aşağıdakı məlumatları daxil edin.</p>
+        <form id="examForm">
+            <div class="form-group">
+                <label for="examType">İmtahan növü:</label>
+                <select id="examType" required>
+                    <option value="">Seçin</option>
+                    <option value="1">8 Dekabr OTK Blok İmtahanı</option>
+                    <option value="2">Ali təhsil imtahanı</option>
+                    <option value="3">Orta təhsil imtahanı</option>
+                </select>
+                <span class="icon">&#9662;</span>
+            </div>
+            <div class="form-group">
+                <label for="examCode">İmtahan kodu:</label>
+                <input type="text" id="examCode" pattern="\d*" inputmode="numeric" required>
+                <span class="icon">&#128274;</span>
+                <div class="error-message" id="codeError">Yanlış imtahan kodu. Zəhmət olmasa, yenidən cəhd edin.</div>
+            </div>
+            <button type="submit">Yoxla</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('examForm');
+        const examCode = document.getElementById('examCode');
+        const codeError = document.getElementById('codeError');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (examCode.value === '595315') {
+                window.location.href = 'https://abushov.vercel.app';
+            } else {
+                codeError.style.display = 'block';
+                examCode.style.borderColor = 'var(--error-color)';
+            }
+        });
+
+        examCode.addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '');
+            if (codeError.style.display === 'block') {
+                codeError.style.display = 'none';
+                this.style.borderColor = '';
+            }
+        });
+
+        document.getElementById('examType').addEventListener('change', function() {
+            this.style.borderColor = this.value ? 'var(--primary-color)' : '';
+        });
+    </script>
+</body>
+</html>
